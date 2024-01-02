@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { addName, addNumber } from 'store/action';
+import { addName, addNumber } from 'store/formSlice';
 
 export const FormAddContacts = ({ handleAddContact }) => {
   const name = useSelector(state => state.form.name);

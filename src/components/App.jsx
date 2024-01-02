@@ -5,13 +5,14 @@ import { ContactsList } from './ContactsList/ContactsList';
 import { Filter } from './Filter/Filter';
 import swal from 'sweetalert';
 import { useDispatch, useSelector } from 'react-redux';
+
 import {
   addContact,
-  cleanForm,
   dellContact,
   getFilterValue,
   getStorage,
-} from 'store/action';
+} from 'store/contactsSlice';
+import { cleanForm } from 'store/formSlice';
 
 export const App = () => {
   const contacts = useSelector(state => state.contact.contacts);
@@ -25,7 +26,7 @@ export const App = () => {
   useEffect(() => {
     const storedContacts = localStorage.getItem('contacts');
     if (storedContacts) {
-      dispatch(getStorage(storedContacts));
+      dispatch(getStorage(JSON.parse(storedContacts)));
     }
   }, [dispatch]);
 
@@ -66,7 +67,7 @@ export const App = () => {
   };
 
   const handleDeleteContact = e => {
-    dispatch(dellContact(e));
+    dispatch(dellContact(e.target.id));
   };
 
   const arreyContactsFiltered = () =>
