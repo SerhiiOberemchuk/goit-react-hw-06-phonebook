@@ -3,7 +3,7 @@ import { initialState } from './initialState';
 
 export const contactsSlice = createSlice({
   name: 'contacts',
-  initialState: initialState.contact,
+  initialState: initialState,
   reducers: {
     getFilterValue: (state, action) => {
       state.filter = action.payload;

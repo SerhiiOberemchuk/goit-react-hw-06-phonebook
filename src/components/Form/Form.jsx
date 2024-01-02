@@ -1,27 +1,53 @@
+import { nanoid } from 'nanoid';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addName, addNumber } from 'store/formSlice';
+import { addContact } from 'store/contactsSlice';
+import swal from 'sweetalert';
 
-export const FormAddContacts = ({ handleAddContact }) => {
-  const name = useSelector(state => state.form.name);
-  const number = useSelector(state => state.form.number);
-
+export const FormAddContacts = () => {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
+  const contacts = useSelector(state => state.contacts);
   const dispatch = useDispatch();
 
   const handleChange = e => {
     const { name, value } = e.target;
     if (name === 'name') {
-      dispatch(addName(value));
+      setName(value);
     } else if (name === 'number') {
-      dispatch(addNumber(value));
+      setNumber(value);
     }
   };
-  const handleSubmit = e => {
-    e.preventDefault();
-    handleAddContact();
+  const cleanState = () => {
+    setName('');
+    setNumber('');
   };
+  const handleAddContact = e => {
+    e.preventDefault();
+    const newContact = {
+      id: nanoid(),
+      name: name,
+      number: number,
+    };
 
+    const isContact = contacts.some(
+      obj =>
+        obj.name.trim().toLowerCase() === newContact.name.trim().toLowerCase()
+    );
+    if (isContact) {
+      swal({
+        title: newContact.name,
+        text: 'Is already in contacts!',
+        icon: 'info',
+      });
+      cleanState();
+      return;
+    }
+    dispatch(addContact(newContact));
+    cleanState();
+  };
   return (
-    <form onSubmit={e => handleSubmit(e)}>
+    <form onSubmit={handleAddContact}>
       <div className="mb-3">
         <label htmlFor="name" className="form-label">
           Name

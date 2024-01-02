@@ -1,4 +1,1 @@
-export const initialState = {
-  contact: { filter: '', contacts: [] },
-  form: { name: '', number: '' },
-};
+export const initialState = { filter: '', contacts: [] };
